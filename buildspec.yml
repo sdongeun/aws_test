@@ -8,16 +8,14 @@ phases:
       # Get commit hash value to tag the image
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
-      # Replace with your application name
-      - APPLICATION_NAME=spring-test
       # Replace with this 435320931996.dkr.ecr.ap-south-1.amazonaws.com to your repository URI
-      - REPOSITORY_URI=370411177783.dkr.ecr.ap-northeast-2.amazonaws.com/dongeun/repository/$APPLICATION_NAME
+      - REPOSITORY_URI=370411177783.dkr.ecr.ap-northeast-2.amazonaws.com/dongeun/repository
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t $APPLICATION_NAME:$IMAGE_TAG .
-      - docker tag $APPLICATION_NAME:$IMAGE_TAG $REPOSITORY_URI:$IMAGE_TAG
+      - docker build -t $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
   post_build:
     commands:
       - echo Build completed on `date`
