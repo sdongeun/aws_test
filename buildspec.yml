@@ -8,10 +8,7 @@ phases:
       # Get commit hash value to tag the image
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
-      # Replace with your application name
-      - APPLICATION_NAME=spring-boot-sample-app
-      # Replace with this 435320931996.dkr.ecr.ap-south-1.amazonaws.com to your repository URI
-      - REPOSITORY_URI=435320931996.dkr.ecr.ap-south-1.amazonaws.com/$APPLICATION_NAME
+      - REPOSITORY_URI={account_id}.dkr.ecr.ap-south-1.amazonaws.com/{repository_name}
   build:
     commands:
       - echo Build started on `date`
@@ -25,7 +22,7 @@ phases:
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
       # Give your container name
-      - printf '[{"name":"SpringBootAppContainer", "imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"{container_name}", "imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 artifacts:
   files:
     - imagedefinitions.json
